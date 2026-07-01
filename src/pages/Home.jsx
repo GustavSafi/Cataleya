@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import PeptideStackBuilder from "@/components/stack/PeptideStackBuilder";
 
 const LOGO_URL = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/a98525bef_IMG_1485.jpg";
-const PRODUCT_IMG = "/__generating__/img_204d0a9832d4.png";
-const LAB_IMG = "/__generating__/img_67adfd0ca490.png";
+const LAB_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
 
 // Most popular peptides with real names
 const featuredProducts = [

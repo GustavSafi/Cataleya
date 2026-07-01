@@ -9,8 +9,8 @@ import {
 
 const faqs = [
   {
-    q: "What is BPC-157?",
-    a: "BPC-157 (Body Protection Compound-157) is a synthetic peptide consisting of 15 amino acids. It is a partial sequence of Body Protection Compound (BPC) found in human gastric juice. It is supplied strictly for research and laboratory use."
+    q: "What are research peptides?",
+    a: "Peptides are short chains of amino acids that act as signaling molecules in biological systems. The compounds we supply are synthetic research peptides, provided as lyophilized (freeze-dried) powder strictly for laboratory and research use. Each product page includes detailed information on the specific peptide, its studied mechanisms, and the published literature."
   },
   {
     q: "What purity do your peptides meet?",
@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We accept all major credit cards (Visa, MasterCard, American Express) through our secure, SSL-encrypted checkout powered by Stripe."
+    a: "We currently accept Zelle and cryptocurrency (BTC, ETH, USDC and more). For Zelle, payment instructions are shown after you place your order. Crypto payments are confirmed automatically. Card payments are coming in a future update."
   },
 ];
 

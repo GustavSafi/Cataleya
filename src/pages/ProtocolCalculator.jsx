@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Calculator, FlaskRound, Mail, CheckCircle2 } from "lucide-react";
-import ProtocolWizard from "@/components/protocol/ProtocolWizard";
+import { Calculator, FlaskRound, Mail, CheckCircle2, Sparkles } from "lucide-react";
+// Custom protocol wizard is deferred to a later release — see the "coming soon" card below.
+// import ProtocolWizard from "@/components/protocol/ProtocolWizard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -231,6 +232,39 @@ function RequestProtocolForm() {
   );
 }
 
+// Placeholder for the deferred custom-protocol wizard.
+function CustomProtocolComingSoon() {
+  return (
+    <div className="bg-white rounded-2xl border border-border/60 overflow-hidden">
+      <div className="px-6 py-5 border-b border-border/60 bg-secondary/30">
+        <div className="flex items-center gap-2">
+          <FlaskRound className="w-4 h-4 text-primary" />
+          <h2 className="text-sm font-bold uppercase tracking-widest text-foreground">Custom Protocol</h2>
+        </div>
+      </div>
+      <div className="px-6 py-10 text-center space-y-4">
+        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+          <Sparkles className="w-6 h-6 text-primary" />
+        </div>
+        <div>
+          <h3 className="font-bold text-foreground text-base mb-1">Coming Soon</h3>
+          <p className="text-[12px] text-muted-foreground leading-relaxed max-w-xs mx-auto">
+            Personalised research protocols tailored to your goals, biomarkers, and experience
+            are on the way. In the meantime, use the reconstitution calculator or reach out via
+            our contact page.
+          </p>
+        </div>
+        <a
+          href="/contact"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary hover:underline"
+        >
+          <Mail className="w-3.5 h-3.5" /> Contact us
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function ProtocolCalculator() {
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-10 py-16 lg:py-24 space-y-12">
@@ -241,13 +275,13 @@ export default function ProtocolCalculator() {
           Protocol <span className="text-primary italic">Calculator</span>
         </h1>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          Calculate exact injection volumes, or request a free custom protocol guide tailored to your research.
+          Calculate exact injection volumes for any peptide, vial size, and target dose.
         </p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <ReconstitutionCalculator />
-        <ProtocolWizard />
+        <CustomProtocolComingSoon />
       </div>
 
       <div className="text-center text-[11px] text-muted-foreground leading-relaxed border-t border-border/40 pt-8">

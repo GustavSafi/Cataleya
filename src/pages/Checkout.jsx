@@ -16,6 +16,7 @@ export default function Checkout() {
     line1: "", line2: "", city: "", state: "", zip: "", country: "United States",
   });
   const [paymentMethod, setPaymentMethod] = useState("zelle");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +36,10 @@ export default function Checkout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!agreedToTerms) {
+      setError("Please agree to the Terms of Service to continue.");
+      return;
+    }
     setError("");
     setLoading(true);
     try {
@@ -135,7 +140,23 @@ export default function Checkout() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full h-12 font-medium" disabled={loading}>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary flex-shrink-0"
+            />
+            <span className="text-xs text-muted-foreground leading-relaxed">
+              I agree to the{" "}
+              <Link to="/terms" target="_blank" className="text-primary font-medium hover:underline">
+                Terms of Service
+              </Link>{" "}
+              and confirm these products are for research use only, not for human or animal consumption.
+            </span>
+          </label>
+
+          <Button type="submit" className="w-full h-12 font-medium" disabled={loading || !agreedToTerms}>
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
