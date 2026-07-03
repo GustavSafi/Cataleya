@@ -1,27 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, BookOpen, ShoppingCart } from "lucide-react";
 import PeptideQuickGuide from "@/components/shop/PeptideQuickGuide";
+import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 
 const productImage = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
 
-const products = [
-  { id: "bpc157",     name: "BPC-157",     dose: "5mg",  price: 49.99,  reviews: 55, inStock: true },
-  { id: "tb500",      name: "TB-500",      dose: "5mg",  price: 44.99,  reviews: 48, inStock: true },
-  { id: "semaglutide",name: "Semaglutide", dose: "5mg",  price: 89.99,  reviews: 41, inStock: false },
-  { id: "tirzepatide",name: "Tirzepatide", dose: "5mg",  price: 99.99,  reviews: 33, inStock: false },
-  { id: "pt141",      name: "PT-141",      dose: "10mg", price: 54.99,  reviews: 37, inStock: true },
-  { id: "cjc1295",    name: "CJC-1295",    dose: "5mg",  price: 59.99,  reviews: 29, inStock: true },
-  { id: "ipamorelin", name: "Ipamorelin",  dose: "5mg",  price: 39.99,  reviews: 44, inStock: true },
-  { id: "igf1lr3",    name: "IGF-1 LR3",   dose: "1mg",  price: 79.99,  reviews: 26, inStock: false },
-  { id: "ghrp6",      name: "GHRP-6",      dose: "5mg",  price: 34.99,  reviews: 31, inStock: true },
-  { id: "selank",     name: "Selank",      dose: "5mg",  price: 49.99,  reviews: 22, inStock: true },
-  { id: "sermorelin", name: "Sermorelin",  dose: "5mg",  price: 54.99,  reviews: 38, inStock: true },
-  { id: "hexarelin",  name: "Hexarelin",   dose: "5mg",  price: 44.99,  reviews: 19, inStock: true },
-];
+// In-stock items first, then preorder (out-of-stock) items.
+const products = [...ALL_PEPTIDES].sort((a, b) => Number(b.inStock) - Number(a.inStock));
 
 export default function Shop() {
+  const { addToCart } = useOutletContext() || {};
+
+  const handleAdd = (product) => {
+    addToCart?.({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: productImage,
+      qty: 1,
+      preorder: product.inStock === false,
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 lg:px-10 py-12 lg:py-20">
       <div className="text-center mb-14">
@@ -45,10 +47,11 @@ export default function Shop() {
             key={product.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
+            transition={{ delay: Math.min(i * 0.04, 0.5) }}
             className="group"
           >
-            <Link to="/product/bpc-157">
+            {/* Image + title link through to the research page */}
+            <Link to={`/peptide/${product.id}`} aria-label={`View ${product.name} research profile`}>
               <div className="bg-secondary/40 rounded-xl overflow-hidden aspect-square mb-3 relative border border-border/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10 group-hover:border-primary/30">
                 <img
                   src={productImage}
@@ -67,19 +70,37 @@ export default function Shop() {
               <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
                 {product.name} <span className="text-muted-foreground font-normal text-xs">{product.dose}</span>
               </h3>
-              <div className="flex items-center gap-1 mt-1">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} className="w-3 h-3 fill-primary text-primary" />
-                ))}
-                <span className="text-[11px] text-muted-foreground ml-1">({product.reviews})</span>
-              </div>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-primary font-bold text-sm">${product.price.toFixed(2)}</span>
-                <span className="text-[11px] font-semibold text-primary/60 uppercase tracking-wider group-hover:text-primary transition-colors">
-                  {product.inStock ? "Add →" : "Preorder →"}
-                </span>
-              </div>
             </Link>
+
+            <div className="flex items-center gap-1 mt-1">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star key={s} className="w-3 h-3 fill-primary text-primary" />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between mt-1.5 mb-2.5">
+              <span className="text-primary font-bold text-sm">${product.price.toFixed(2)}</span>
+              {!product.inStock && (
+                <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Out of stock</span>
+              )}
+            </div>
+
+            {/* Two actions: research or buy */}
+            <div className="flex gap-2">
+              <Link
+                to={`/peptide/${product.id}`}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-lg border border-border/70 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors"
+              >
+                <BookOpen className="w-3.5 h-3.5" /> Research
+              </Link>
+              <button
+                onClick={() => handleAdd(product)}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-lg bg-primary text-white text-[11px] font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors"
+              >
+                <ShoppingCart className="w-3.5 h-3.5" /> {product.inStock ? "Add" : "Preorder"}
+              </button>
+            </div>
+
             <PeptideQuickGuide productId={product.id} />
           </motion.div>
         ))}

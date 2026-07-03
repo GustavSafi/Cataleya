@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  FlaskRound, Clock, Thermometer, Droplets, BookOpen, Microscope, AlertTriangle, FileText, ChevronRight, ArrowLeft, Zap, Activity
+  FlaskRound, Clock, Thermometer, Droplets, BookOpen, Microscope, AlertTriangle, FileText, ChevronRight, ArrowLeft, Zap, Activity, ShoppingCart
 } from "lucide-react";
 import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 import { trackPeptideView } from "@/components/research/ResearchSidebar";
 import LabResultsSection from "@/components/product/LabResultsSection";
+
+const PRODUCT_IMAGE = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
 
 const DISCLAIMER = "For research and educational purposes only. Not for human use. Not evaluated by the FDA. All information is derived from published scientific literature.";
 
@@ -83,8 +85,21 @@ const tabs = [
 
 export default function PeptideDetail() {
   const { id } = useParams();
+  const { addToCart } = useOutletContext() || {};
   const peptide = ALL_PEPTIDES.find((p) => p.id === id);
   const [activeTab, setActiveTab] = useState("overview");
+
+  const handleAddToCart = () => {
+    if (!peptide) return;
+    addToCart?.({
+      id: peptide.id,
+      name: peptide.name,
+      price: peptide.price,
+      image: PRODUCT_IMAGE,
+      qty: 1,
+      preorder: peptide.inStock === false,
+    });
+  };
 
   useEffect(() => {
     if (id) trackPeptideView(id);
@@ -135,7 +150,18 @@ export default function PeptideDetail() {
             </div>
             <div className="text-right">
               <p className="text-2xl font-bold text-primary">${peptide.price.toFixed(2)}</p>
-              <p className="text-sm text-muted-foreground">{peptide.dose} / vial</p>
+              <p className="text-sm text-muted-foreground mb-3">{peptide.dose} / vial</p>
+              {peptide.inStock === false && (
+                <p className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-2 py-1 mb-2 inline-block">
+                  Out of stock — preorder available
+                </p>
+              )}
+              <button
+                onClick={handleAddToCart}
+                className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-lg bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors"
+              >
+                <ShoppingCart className="w-4 h-4" /> {peptide.inStock === false ? "Preorder" : "Add to Cart"}
+              </button>
             </div>
           </div>
 

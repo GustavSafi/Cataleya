@@ -24,9 +24,15 @@ export default function LabResultsSection({ productId, productName }) {
 
   const loadResults = async () => {
     setLoading(true);
-    const data = await api.labResults.filter({ product_id: productId, is_visible: true });
-    setResults(data);
-    setLoading(false);
+    try {
+      const data = await api.labResults.filter({ product_id: productId, is_visible: true });
+      setResults(data);
+    } catch {
+      // API unavailable — show the empty state rather than a perpetual spinner.
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpload = async () => {

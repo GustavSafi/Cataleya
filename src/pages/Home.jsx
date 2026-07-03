@@ -9,15 +9,16 @@ const LOGO_URL = "https://media.base44.com/images/public/6a1f4949719273f90329fc4
 const LAB_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
 
 // Most popular peptides with real names
+// Curated in-stock highlights for the homepage grid.
 const featuredProducts = [
-  { id: "bpc157",    name: "BPC-157",      dose: "5mg",  price: 49.99,  tag: "Best Seller", reviews: 55 },
-  { id: "tb500",     name: "TB-500",       dose: "5mg",  price: 44.99,  tag: "Top Rated",   reviews: 48 },
-  { id: "semaglutide",name: "Semaglutide", dose: "5mg",  price: 89.99,  tag: "Popular",     reviews: 41 },
-  { id: "tirzepatide",name: "Tirzepatide", dose: "5mg",  price: 99.99,  tag: "New",         reviews: 33 },
-  { id: "pt141",     name: "PT-141",       dose: "10mg", price: 54.99,  tag: null,          reviews: 37 },
-  { id: "cjc1295",   name: "CJC-1295",     dose: "5mg",  price: 59.99,  tag: null,          reviews: 29 },
-  { id: "ipamorelin",name: "Ipamorelin",   dose: "5mg",  price: 39.99,  tag: null,          reviews: 44 },
-  { id: "igf1lr3",   name: "IGF-1 LR3",    dose: "1mg",  price: 79.99,  tag: null,          reviews: 26 },
+  { id: "bpc157",      name: "BPC-157",       dose: "5mg",  price: 49.99,  tag: "Best Seller", reviews: 55 },
+  { id: "tb500",       name: "TB-500",        dose: "5mg",  price: 44.99,  tag: "Top Rated",   reviews: 48 },
+  { id: "retatrutide", name: "Retatrutide",   dose: "10mg", price: 119.99, tag: "New",         reviews: 12 },
+  { id: "cagrilintide",name: "Cagrilintide",  dose: "5mg",  price: 94.99,  tag: "Popular",     reviews: 18 },
+  { id: "cjc1295",     name: "CJC-1295",      dose: "5mg",  price: 59.99,  tag: null,          reviews: 29 },
+  { id: "ipamorelin",  name: "Ipamorelin",    dose: "5mg",  price: 39.99,  tag: null,          reviews: 44 },
+  { id: "ghkcu",       name: "GHK-Cu",        dose: "50mg", price: 59.99,  tag: null,          reviews: 21 },
+  { id: "nad",         name: "NAD+",          dose: "500mg",price: 89.99,  tag: null,          reviews: 16 },
 ];
 
 const tagColors = {
@@ -178,7 +179,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07, duration: 0.5 }}
               >
-                <Link to="/product/bpc-157" className="group block">
+                <Link to={`/peptide/${product.id}`} className="group block">
                   {/* Image card */}
                   <div className="relative rounded-xl overflow-hidden mb-3 border border-border/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10 group-hover:border-primary/30" style={{ paddingTop: "55%" }}>
                     {/* Blurry Cattleya background */}

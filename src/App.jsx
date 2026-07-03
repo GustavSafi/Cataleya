@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -17,7 +17,6 @@ import ResetPassword from '@/pages/ResetPassword';
 // Site pages
 import SiteLayout from '@/components/layout/SiteLayout';
 import Home from '@/pages/Home';
-import ProductPage from '@/pages/ProductPage';
 import Shop from '@/pages/Shop';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
@@ -69,7 +68,7 @@ const AuthenticatedApp = () => {
       {/* Public site routes */}
       <Route element={<SiteLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/product/bpc-157" element={<ProductPage />} />
+        <Route path="/product/bpc-157" element={<Navigate to="/peptide/bpc157" replace />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/catalog" element={<Shop />} />
         <Route path="/about" element={<About />} />
