@@ -48,7 +48,7 @@ export default function Privacy() {
         <Section title="5. Data Sharing">
           <p>We do not sell your personal information. We share data with:</p>
           <ul className="list-disc list-inside space-y-1 mt-2">
-            <li>Payment processors (Stripe) for transaction processing</li>
+            <li>Payment providers (e.g. cryptocurrency payment processors) for transaction processing</li>
             <li>Shipping carriers for order fulfillment</li>
             <li>Service providers under data processing agreements</li>
             <li>Law enforcement when legally required</li>

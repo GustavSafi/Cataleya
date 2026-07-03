@@ -1,14 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CartSlideIn from "./CartSlideIn";
 
+const CART_STORAGE_KEY = "cattleya_cart";
+
+function loadCart() {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    // Guard against corrupted/old data shapes.
+    return Array.isArray(parsed) ? parsed.filter((i) => i && i.id && typeof i.price === "number") : [];
+  } catch {
+    return [];
+  }
+}
+
 export default function SiteLayout() {
   const navigate = useNavigate();
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(loadCart);
   const [discreet, setDiscreet] = useState(false);
+
+  // Persist the cart so it survives page reloads.
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+    } catch {
+      // Storage unavailable (e.g. private mode) — cart just won't persist.
+    }
+  }, [cartItems]);
 
   const handleUpdateQty = (id, qty) => {
     if (qty <= 0) {

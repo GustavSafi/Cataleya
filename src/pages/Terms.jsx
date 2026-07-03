@@ -44,7 +44,7 @@ export default function Terms() {
         </Section>
 
         <Section title="4. Orders & Payment">
-          <p>All prices are in USD. Orders are subject to acceptance and product availability. We reserve the right to cancel orders at our discretion. Payment is processed via Stripe and is subject to their terms.</p>
+          <p>All prices are in USD. Orders are subject to acceptance and product availability. We reserve the right to cancel orders at our discretion. We currently accept payment via Zelle and cryptocurrency; payment instructions are provided at checkout, and orders are confirmed once payment is received.</p>
         </Section>
 
         <Section title="5. Shipping & Returns">

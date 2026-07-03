@@ -149,7 +149,13 @@ export default function Checkout() {
             />
             <span className="text-xs text-muted-foreground leading-relaxed">
               I agree to the{" "}
-              <Link to="/terms" target="_blank" className="text-primary font-medium hover:underline">
+              <Link
+                to="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-primary font-medium underline"
+              >
                 Terms of Service
               </Link>{" "}
               and confirm these products are for research use only, not for human or animal consumption.
