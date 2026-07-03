@@ -7,6 +7,7 @@ import rateLimit from "express-rate-limit";
 import { pool } from "../db/pool.js";
 import { signToken } from "../lib/jwt.js";
 import { sendEmail } from "../lib/email.js";
+import { sendWelcomeEmail } from "../lib/authEmails.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -118,6 +119,8 @@ router.post("/verify-otp", async (req, res) => {
     "UPDATE users SET email_verified = TRUE, otp_code_hash = NULL, otp_expires_at = NULL WHERE id = $1",
     [user.id]
   );
+
+  sendWelcomeEmail(email).catch((err) => console.error("Failed to send welcome email:", err));
 
   const access_token = signToken(user.id);
   res.json({ access_token });

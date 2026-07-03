@@ -4,7 +4,7 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { createCryptoCharge, isStubMode } from "../lib/crypto-payments.js";
-import { sendOrderPlacedEmail, sendOrderPaidEmail } from "../lib/orderEmails.js";
+import { sendOrderPlacedEmail, sendOrderPaidEmail, sendAdminNewOrderEmail } from "../lib/orderEmails.js";
 import { requireAuth } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -89,6 +89,7 @@ router.post("/", async (req, res) => {
 
   const order = rows[0];
   sendOrderPlacedEmail(order).catch((err) => console.error("Failed to send order-placed email:", err));
+  sendAdminNewOrderEmail(order).catch((err) => console.error("Failed to send admin new-order email:", err));
 
   res.status(201).json(order);
 });

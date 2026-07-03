@@ -54,3 +54,30 @@ export async function sendOrderPaidEmail(order) {
     `,
   });
 }
+
+// Notifies the shop operator that a new order came in so they know to check the
+// admin page (important for Zelle, where there's no automatic payment confirmation).
+export async function sendAdminNewOrderEmail(order) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) return; // no admin address configured — skip silently
+
+  const shortId = order.id.slice(0, 8);
+  const method = order.payment_method === "zelle" ? "Zelle (needs manual confirmation)" : "Crypto";
+  await sendEmail({
+    to: adminEmail,
+    subject: `New order #${shortId} — ${order.payment_method.toUpperCase()} — $${Number(order.total).toFixed(2)}`,
+    html: `
+      <p>A new order has been placed.</p>
+      <ul>${formatItemsHtml(order.items)}</ul>
+      <p><strong>Total:</strong> $${Number(order.total).toFixed(2)}<br/>
+      <strong>Payment:</strong> ${method}<br/>
+      <strong>Customer:</strong> ${order.full_name} (${order.email})<br/>
+      <strong>Order ID:</strong> ${order.id}</p>
+      <p>Review it in the admin panel: <strong>/admin/orders</strong>${
+        order.payment_method === "zelle"
+          ? " — once the Zelle payment lands in your bank, mark it paid there."
+          : "."
+      }</p>
+    `,
+  });
+}
