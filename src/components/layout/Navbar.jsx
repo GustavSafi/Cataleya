@@ -46,7 +46,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
           <div className="flex items-center h-20">
 
             {/* Brand + nav cluster, kept together on the left with a clear gap between them */}
-            <div className="flex items-center gap-10 lg:gap-16">
+            <div className="flex items-center gap-10 xl:gap-16">
               {/* Logo */}
               <Link to="/" aria-label="Cattleya Labs — go to home page" className="flex items-center gap-2.5 group flex-shrink-0">
                 <img
@@ -65,8 +65,8 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
                 </div>
               </Link>
 
-              {/* Desktop nav */}
-              <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-7">
+              {/* Desktop nav — only shown at xl+ where all links fit without crowding; below that the hamburger menu is used */}
+              <nav aria-label="Main navigation" className="hidden xl:flex items-center gap-7">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -84,14 +84,14 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
             <div className="flex items-center gap-4 ml-auto" role="group" aria-label="Account and cart">
               <Link
                 to="/search"
-                className="hidden lg:flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
+                className="hidden xl:flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
                 aria-label="Search"
               >
                 <Search className="w-4 h-4" aria-hidden="true" />
               </Link>
               <Link
                 to="/account"
-                className="hidden lg:flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
+                className="hidden xl:flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
               >
                 <User className="w-4 h-4" aria-hidden="true" />
                 <span>Account</span>
@@ -115,7 +115,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-menu"
                 aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-                className="lg:hidden p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
+                className="xl:hidden p-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
               >
                 {mobileOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
               </button>
@@ -131,7 +131,7 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white border-t border-border overflow-hidden"
+              className="xl:hidden bg-white border-t border-border overflow-hidden"
             >
               <nav aria-label="Mobile navigation" className="px-6 py-6 space-y-5">
                 {navLinks.map((link) => (
@@ -145,9 +145,16 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
                   </Link>
                 ))}
                 <Link
-                  to="/login"
+                  to="/search"
                   onClick={() => setMobileOpen(false)}
                   className="block text-sm font-semibold uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors pt-4 border-t border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
+                >
+                  Search
+                </Link>
+                <Link
+                  to="/account"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-sm font-semibold uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
                 >
                   Account
                 </Link>
