@@ -123,7 +123,7 @@ export default function SuppliesGuide() {
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-10 py-16 lg:py-24 space-y-16">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center">
         <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">Research Supplies</span>
         <h1 className="font-display text-3xl lg:text-4xl font-light text-foreground mb-3">
           Protocol <span className="text-primary italic">Supplies Calculator</span>
@@ -159,7 +159,7 @@ export default function SuppliesGuide() {
         <motion.div
           key={selectedWeeks}
           initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6"
         >
           {[

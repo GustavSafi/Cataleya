@@ -135,7 +135,7 @@ export default function PeptideDetail() {
         </Link>
 
         {/* Hero */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="mb-10">
           <div className="flex flex-wrap items-start gap-4 justify-between">
             <div>
               <div className="flex flex-wrap gap-2 mb-3">
@@ -208,7 +208,7 @@ export default function PeptideDetail() {
         <motion.div
           key={activeTab}
           initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.2 }}
           id={`tabpanel-${activeTab}`}
           role="tabpanel"

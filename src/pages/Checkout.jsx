@@ -71,7 +71,7 @@ export default function Checkout() {
 
   return (
     <div className="max-w-2xl mx-auto px-6 lg:px-10 py-12 lg:py-20">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
         <h1 className="font-display text-3xl font-light mb-2">Checkout</h1>
         <p className="text-sm text-muted-foreground mb-8">
           {cartItems.length} item{cartItems.length > 1 ? "s" : ""} · <span className="font-semibold text-primary">${total.toFixed(2)}</span>

@@ -23,7 +23,7 @@ export default function Contact() {
     <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
         className="text-center mb-14"
       >
         <h1 className="font-display text-3xl lg:text-4xl font-light">

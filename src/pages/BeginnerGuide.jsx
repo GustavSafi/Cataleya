@@ -259,7 +259,7 @@ export default function BeginnerGuide() {
   return (
     <div className="max-w-4xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center mb-12">
         <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">Start Here</span>
         <h1 className="font-display text-3xl lg:text-5xl font-light text-foreground mb-4">
           Beginner's Guide to <span className="text-primary italic">Research Peptides</span>
@@ -275,7 +275,7 @@ export default function BeginnerGuide() {
           <motion.div
             key={section.id}
             initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: i * 0.05 }}
           >
             <SectionCard section={section} />

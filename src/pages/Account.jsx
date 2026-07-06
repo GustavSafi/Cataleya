@@ -24,7 +24,7 @@ export default function Account() {
   return (
     <div className="max-w-3xl mx-auto px-6 lg:px-10 py-12 min-h-screen">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="mb-8">
         <p className="text-xs font-bold uppercase tracking-widest text-primary/60 mb-1">Researcher Account</p>
         <h1 className="font-display text-3xl font-light text-foreground">
           Welcome, <span className="text-primary italic">{user?.full_name?.split(" ")[0] || "Researcher"}</span>
@@ -34,7 +34,7 @@ export default function Account() {
 
       {/* Loyalty — coming soon */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
+        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.05 }}
         className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 p-6 mb-6"
       >
         <div className="flex items-center gap-2 mb-2">
@@ -50,7 +50,7 @@ export default function Account() {
 
       {/* Account actions */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: 0.1 }}
         className="rounded-2xl border border-border/60 bg-white p-5"
       >
         <h2 className="text-sm font-bold uppercase tracking-widest text-foreground mb-4">Account</h2>

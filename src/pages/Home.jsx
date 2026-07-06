@@ -55,7 +55,7 @@ export default function Home() {
             {/* Text side */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.8 }}
               className="space-y-8 order-2 lg:order-1"
             >
@@ -108,7 +108,7 @@ export default function Home() {
             {/* Logo / Flower side */}
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
+              whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, delay: 0.15 }}
               className="flex justify-center order-1 lg:order-2"
             >

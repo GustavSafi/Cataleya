@@ -12,7 +12,7 @@ const Section = ({ title, children }) => (
 export default function Terms() {
   return (
     <div className="max-w-3xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
         <div className="flex items-center gap-3 mb-3">
           <FileText className="w-5 h-5 text-primary" aria-hidden="true" />
           <span className="text-xs font-bold uppercase tracking-widest text-primary/60">Legal</span>

@@ -71,7 +71,7 @@ function BatchResult({ batch }) {
   const [timelineOpen, setTimelineOpen] = useState(false);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-8 space-y-5">
+    <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="mt-8 space-y-5">
 
       {/* Status banner */}
       <div className={`flex items-center gap-3 p-4 rounded-xl border ${batch.status === "verified" ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200"}`}
@@ -197,7 +197,7 @@ export default function COASearch() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center mb-12">
         <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">COA Transparency</span>
         <h1 className="font-display text-3xl lg:text-4xl font-light">
           Batch <span className="text-primary italic">Verification</span>
@@ -252,7 +252,7 @@ export default function COASearch() {
         {notFound && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
             exit={{ opacity: 0 }}
             className="mt-10 text-center py-14 bg-secondary/30 rounded-xl border border-border/60"
             role="alert"

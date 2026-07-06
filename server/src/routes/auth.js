@@ -26,6 +26,15 @@ function hashToken(token) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
 
+// Auto-grants the admin role to the single configured operator email (ADMIN_EMAIL),
+// so there's no manual SQL step to make yourself an admin — just register/log in with
+// that email. Case-insensitive; no-op if ADMIN_EMAIL is unset.
+async function ensureAdminRole(email, userId) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail || email.toLowerCase() !== adminEmail.toLowerCase()) return;
+  await pool.query("UPDATE users SET role = 'admin' WHERE id = $1 AND role != 'admin'", [userId]);
+}
+
 // POST /api/auth/register — create an unverified user and email an OTP code
 router.post("/register", async (req, res) => {
   const parsed = z.object({ email: emailSchema, password: passwordSchema }).safeParse(req.body);
@@ -120,6 +129,7 @@ router.post("/verify-otp", async (req, res) => {
     [user.id]
   );
 
+  await ensureAdminRole(email, user.id);
   sendWelcomeEmail(email).catch((err) => console.error("Failed to send welcome email:", err));
 
   const access_token = signToken(user.id);
@@ -149,6 +159,8 @@ router.post("/login", async (req, res) => {
   if (!user.email_verified) {
     return res.status(403).json({ error: "Please verify your email before logging in" });
   }
+
+  await ensureAdminRole(email, user.id);
 
   const access_token = signToken(user.id);
   res.json({ access_token });

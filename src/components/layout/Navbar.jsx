@@ -42,43 +42,46 @@ export default function Navbar({ cartCount = 0, onCartClick }) {
           scrolled ? "bg-white/97 backdrop-blur-md shadow-sm" : "bg-white"
         } border-b border-border/60`}
       >
-        <div className="max-w-6xl mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between h-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center h-20">
 
-            {/* Logo */}
-            <Link to="/" aria-label="Cattleya Labs — go to home page" className="flex items-center gap-2 group flex-shrink-0">
-              <img
-                src={LOGO_URL}
-                alt=""
-                aria-hidden="true"
-                className="h-11 w-11 object-contain"
-              />
-              <div className="flex flex-col leading-none" aria-hidden="true">
-                <span className="text-base font-body font-bold tracking-widest uppercase text-primary">
-                  CATTLEYA
-                </span>
-                <span className="text-[11px] font-body font-semibold tracking-[0.3em] uppercase text-primary/70 bg-primary/10 px-1.5 py-0.5 mt-0.5">
-                  labs
-                </span>
-              </div>
-            </Link>
+            {/* Brand + nav cluster, kept together on the left with a clear gap between them */}
+            <div className="flex items-center gap-10 lg:gap-16">
+              {/* Logo */}
+              <Link to="/" aria-label="Cattleya Labs — go to home page" className="flex items-center gap-2.5 group flex-shrink-0">
+                <img
+                  src={LOGO_URL}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-11 w-11 object-contain"
+                />
+                <div className="flex flex-col leading-none" aria-hidden="true">
+                  <span className="text-base font-body font-bold tracking-widest uppercase text-primary">
+                    CATTLEYA
+                  </span>
+                  <span className="text-[11px] font-body font-semibold tracking-[0.3em] uppercase text-primary/70 bg-primary/10 px-1.5 py-0.5 mt-0.5">
+                    labs
+                  </span>
+                </div>
+              </Link>
 
-            {/* Desktop nav — centered */}
-            <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-10">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="relative text-sm font-body font-semibold uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors duration-300 group py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-1/2 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full" aria-hidden="true" />
-                </Link>
-              ))}
-            </nav>
+              {/* Desktop nav */}
+              <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-7">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="relative text-sm font-body font-semibold uppercase tracking-widest text-foreground/70 hover:text-primary transition-colors duration-300 group py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"
+                  >
+                    {link.label}
+                    <span className="absolute bottom-0 left-1/2 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0 rounded-full" aria-hidden="true" />
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
-            {/* Right actions */}
-            <div className="flex items-center gap-4" role="group" aria-label="Account and cart">
+            {/* Right actions — pushed to the far right */}
+            <div className="flex items-center gap-4 ml-auto" role="group" aria-label="Account and cart">
               <Link
                 to="/search"
                 className="hidden lg:flex items-center gap-1.5 text-sm font-medium text-foreground/60 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:rounded"

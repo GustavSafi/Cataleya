@@ -129,7 +129,7 @@ function ReconstitutionCalculator() {
 
         {/* Results */}
         {result && (
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          <motion.div initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
             className="bg-primary/5 border border-primary/20 rounded-xl p-5 space-y-3"
             role="region" aria-label="Calculation results">
             <p className="text-xs font-bold uppercase tracking-wider text-primary mb-3">Results</p>
@@ -269,7 +269,7 @@ export default function ProtocolCalculator() {
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-10 py-16 lg:py-24 space-y-12">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center">
         <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">Tools & Protocols</span>
         <h1 className="font-display text-3xl lg:text-4xl font-light text-foreground mb-3">
           Protocol <span className="text-primary italic">Calculator</span>

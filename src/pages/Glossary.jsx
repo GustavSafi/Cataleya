@@ -151,7 +151,7 @@ export default function Glossary() {
       {/* Header */}
       <div className="bg-secondary/40 border-b border-border/60">
         <div className="max-w-5xl mx-auto px-6 lg:px-10 py-14 text-center">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
             <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">Reference</span>
             <h1 className="font-display text-3xl lg:text-5xl font-light text-foreground mb-4">
               Scientific <span className="text-primary italic">Glossary</span>

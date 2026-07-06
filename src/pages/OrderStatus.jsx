@@ -43,7 +43,7 @@ export default function OrderStatus() {
 
   return (
     <div className="max-w-2xl mx-auto px-6 lg:px-10 py-12 lg:py-20">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}>
         <div className="flex items-center gap-3 mb-2">
           {isPaid ? (
             <CheckCircle2 className="w-6 h-6 text-green-600" />

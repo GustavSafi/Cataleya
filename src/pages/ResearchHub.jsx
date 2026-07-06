@@ -96,7 +96,7 @@ export default function ResearchHub() {
 
       {/* Header + AI Search Bar */}
       <div className="max-w-6xl mx-auto px-6 lg:px-10 pt-12 pb-6">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-xs font-bold uppercase tracking-widest text-primary/60">AI-Powered Intelligence Dashboard</span>

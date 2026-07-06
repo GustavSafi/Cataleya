@@ -17,14 +17,14 @@ export default function About() {
         <div className="relative max-w-3xl mx-auto px-6 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
             className="font-display text-4xl lg:text-5xl font-light mb-6"
           >
             About <span className="text-primary">Cattleya</span> Labs
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: 0.1 }}
             className="text-muted-foreground leading-relaxed"
           >

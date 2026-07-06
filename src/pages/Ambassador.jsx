@@ -89,7 +89,7 @@ export default function Ambassador() {
   return (
     <div className="max-w-5xl mx-auto px-6 lg:px-10 py-16 lg:py-24 space-y-16">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="text-center">
         <span className="text-xs font-semibold uppercase tracking-widest text-primary/60 mb-3 block">Partnership Program</span>
         <h1 className="font-display text-3xl lg:text-5xl font-light text-foreground mb-4">
           Become an <span className="text-primary italic">Ambassador</span>
@@ -168,7 +168,7 @@ export default function Ambassador() {
             </div>
 
             {platform && (
-              <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
+              <motion.div initial={{ opacity: 0, y: -6 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
                 className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="amb-handle" className="text-xs font-bold text-foreground block mb-1.5">@Handle / Profile URL</label>
