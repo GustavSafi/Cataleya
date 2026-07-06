@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useOutletContext } from "react-router-dom";
+import { useParams, Link, useOutletContext, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   FlaskRound, Clock, Thermometer, Droplets, BookOpen, Microscope, AlertTriangle, FileText, ChevronRight, ArrowLeft, Zap, Activity, ShoppingCart
@@ -85,9 +85,16 @@ const tabs = [
 
 export default function PeptideDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { addToCart } = useOutletContext() || {};
   const peptide = ALL_PEPTIDES.find((p) => p.id === id);
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Go back to wherever the user came from (shop, research, etc.); fall back to the shop.
+  const goBack = () => {
+    if (window.history.length > 1) navigate(-1);
+    else navigate("/shop");
+  };
 
   const handleAddToCart = () => {
     if (!peptide) return;
@@ -124,20 +131,40 @@ export default function PeptideDetail() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 lg:px-10 py-10">
-        {/* Back nav */}
-        <Link
-          to="/research"
+        {/* Back nav — returns to the previous page (shop, research, etc.) */}
+        <button
+          onClick={goBack}
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
-          aria-label="Back to Research Hub"
+          aria-label="Go back"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-          Research Hub
-        </Link>
+          Back
+        </button>
 
         {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} className="mb-10">
-          <div className="flex flex-wrap items-start gap-4 justify-between">
-            <div>
+          <div className="flex flex-col md:flex-row gap-6 lg:gap-10">
+            {/* Product image */}
+            <div className="w-full md:w-64 lg:w-72 flex-shrink-0">
+              <div className="relative bg-secondary/40 rounded-2xl border border-border/50 aspect-square overflow-hidden">
+                <img
+                  src={PRODUCT_IMAGE}
+                  alt={peptide.name}
+                  className="w-full h-full object-contain p-6"
+                />
+                <div className="absolute top-3 left-3 bg-white/90 text-primary text-[9px] font-bold px-2 py-0.5 rounded-full border border-primary/20 uppercase tracking-wider">
+                  ≥99%
+                </div>
+                {peptide.inStock === false && (
+                  <div className="absolute top-3 right-3 bg-foreground/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    Preorder
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
               <div className="flex flex-wrap gap-2 mb-3">
                 {peptide.goals.map((g) => (
                   <span key={g} className="text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary px-2.5 py-1 rounded-full">
@@ -146,22 +173,25 @@ export default function PeptideDetail() {
                 ))}
               </div>
               <h1 className="font-display text-4xl lg:text-5xl font-light text-foreground mb-2">{peptide.name}</h1>
-              <p className="text-base text-muted-foreground max-w-2xl leading-relaxed">{peptide.tagline}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold text-primary">${peptide.price.toFixed(2)}</p>
-              <p className="text-sm text-muted-foreground mb-3">{peptide.dose} / vial</p>
-              {peptide.inStock === false && (
-                <p className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-2 py-1 mb-2 inline-block">
-                  Out of stock — preorder available
-                </p>
-              )}
-              <button
-                onClick={handleAddToCart}
-                className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-lg bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors"
-              >
-                <ShoppingCart className="w-4 h-4" /> {peptide.inStock === false ? "Preorder" : "Add to Cart"}
-              </button>
+              <p className="text-base text-muted-foreground max-w-2xl leading-relaxed mb-6">{peptide.tagline}</p>
+
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p className="text-2xl font-bold text-primary">${peptide.price.toFixed(2)}</p>
+                  <p className="text-sm text-muted-foreground">{peptide.dose} / vial</p>
+                  {peptide.inStock === false && (
+                    <p className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-2 py-1 mt-2 inline-block">
+                      Out of stock — preorder available
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={handleAddToCart}
+                  className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-lg bg-primary text-white text-sm font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors"
+                >
+                  <ShoppingCart className="w-4 h-4" /> {peptide.inStock === false ? "Preorder" : "Add to Cart"}
+                </button>
+              </div>
             </div>
           </div>
 
