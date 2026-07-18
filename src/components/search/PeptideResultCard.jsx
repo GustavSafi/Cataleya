@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Clock } from "lucide-react";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 const GOAL_COLORS = {
   recovery: "bg-green-50 text-green-700 border-green-200",

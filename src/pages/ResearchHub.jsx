@@ -19,7 +19,7 @@ import SearchFilters from "@/components/search/SearchFilters";
 import { useSearchEngine } from "@/hooks/useSearchEngine";
 import { addRecentSearch, getTrendingSearches } from "@/lib/searchStorage";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 const POPULAR_STACKS = [
   { name: "Recovery Foundation",    peptides: ["BPC-157", "TB-500"],          goal: "Soft-tissue signaling research",    category: "Recovery",  color: "bg-green-50 border-green-200 text-green-800" },

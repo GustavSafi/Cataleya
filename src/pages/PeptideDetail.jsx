@@ -7,8 +7,9 @@ import {
 import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 import { trackPeptideView } from "@/components/research/ResearchSidebar";
 import LabResultsSection from "@/components/product/LabResultsSection";
+import ReviewsSection from "@/components/product/ReviewsSection";
 
-const PRODUCT_IMAGE = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const PRODUCT_IMAGE = "/images/product-vial.png";
 
 const DISCLAIMER = "For research and educational purposes only. Not for human use. Not evaluated by the FDA. All information is derived from published scientific literature.";
 
@@ -333,6 +334,8 @@ export default function PeptideDetail() {
         </motion.div>
 
         <LabResultsSection productId={peptide.id} productName={peptide.name} />
+
+        <ReviewsSection productId={peptide.id} />
 
         {/* Related compounds */}
         {related.length > 0 && (

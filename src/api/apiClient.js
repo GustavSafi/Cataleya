@@ -136,4 +136,20 @@ export const api = {
       return request(`/api/orders/${id}/mark-paid`, { method: "POST" });
     },
   },
+
+  forms: {
+    // type: "contact" | "wholesale" | "ambassador"
+    async submit(type, email, payload) {
+      return request(`/api/forms/${type}`, { method: "POST", body: { email, payload } });
+    },
+  },
+
+  reviews: {
+    async list(product_id) {
+      return request(`/api/reviews?product_id=${encodeURIComponent(product_id)}`);
+    },
+    async create(payload) {
+      return request("/api/reviews", { method: "POST", body: payload });
+    },
+  },
 };

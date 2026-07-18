@@ -7,7 +7,7 @@ const BAC_WATER = {
   id: "bac-water-10ml",
   name: "Bacteriostatic Water 10mL",
   price: 12.99,
-  image: "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png",
+  image: "/images/product-vial.png",
   qty: 1,
 };
 

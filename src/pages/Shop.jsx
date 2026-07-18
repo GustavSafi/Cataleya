@@ -5,7 +5,7 @@ import { Star, BookOpen, ShoppingCart } from "lucide-react";
 import PeptideQuickGuide from "@/components/shop/PeptideQuickGuide";
 import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 
-const productImage = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const productImage = "/images/product-vial.png";
 
 // In-stock items first, then preorder (out-of-stock) items.
 const products = [...ALL_PEPTIDES].sort((a, b) => Number(b.inStock) - Number(a.inStock));

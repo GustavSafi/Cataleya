@@ -7,7 +7,7 @@ import PeptideResultCard from "@/components/search/PeptideResultCard";
 import ContentResultCard from "@/components/search/ContentResultCard";
 import ResearchStudiesPanel from "@/components/search/ResearchStudiesPanel";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 const TYPE_ICONS = {
   page: BookOpen,

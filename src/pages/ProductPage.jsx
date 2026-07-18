@@ -13,7 +13,7 @@ const productData = {
   price: 49.99,
   inStock: true,
   preorderEta: "Ships in 2-3 weeks",
-  image: "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png",
+  image: "/images/product-vial.png",
   studies: [
     "Facilitates analysis of nitric oxide-mediated angiogenic and cytoprotective signaling cascades",
     "Supports investigation into vascular endothelial growth factor upregulation and receptor activation",
@@ -23,9 +23,9 @@ const productData = {
 };
 
 const productImages = [
-  "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png",
-  "https://media.base44.com/images/public/6a1f4949719273f90329fc44/ce03c6828_generated_dc9b69cf.png",
-  "https://media.base44.com/images/public/6a1f4949719273f90329fc44/2ac3b7a9d_generated_2ab6b067.png",
+  "/images/product-vial.png",
+  "/images/vial-alt-1.png",
+  "/images/vial-alt-2.png",
 ];
 
 export default function ProductPage() {

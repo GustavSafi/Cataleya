@@ -49,7 +49,7 @@ const SUPPLY_CATEGORIES = [
         brand: "Cattleya Labs",
         note: "0.9% benzyl alcohol, USP-grade sterile, sealed vial",
         url: "/product/bac-water",
-        img: "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png",
+        img: "/images/product-vial.png",
         internal: true,
       },
     ],

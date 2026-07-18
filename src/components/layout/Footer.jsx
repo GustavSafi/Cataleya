@@ -66,7 +66,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="https://media.base44.com/images/public/6a1f4949719273f90329fc44/a98525bef_IMG_1485.jpg"
+                src="/images/cattleya-logo.jpg"
                 alt=""
                 aria-hidden="true"
                 className="w-10 h-10 object-contain rounded-sm brightness-200 opacity-80"

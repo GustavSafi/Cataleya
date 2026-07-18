@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 const severityStyle = {
   warning: "bg-amber-50 border-amber-200 text-amber-800",

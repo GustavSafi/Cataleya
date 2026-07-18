@@ -4,7 +4,7 @@ import { GitCompare, X, Plus, ChevronDown, ChevronUp, Clock, Thermometer, FlaskR
 import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 import { Link } from "react-router-dom";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 const ROWS = [
   { key: "halfLife",   label: "Half-Life",         icon: Clock },

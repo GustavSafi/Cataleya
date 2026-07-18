@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Clock, BookOpen, X, ExternalLink } from "lucide-react";
 import { ALL_PEPTIDES } from "@/components/stack/peptideData";
 
-const VIAL_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const VIAL_IMG = "/images/product-vial.png";
 
 export function trackPeptideView(peptideId) {
   const key = "cl_recent_peptides";

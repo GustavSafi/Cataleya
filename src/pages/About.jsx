@@ -2,8 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Shield, FlaskRound, Award, Microscope } from "lucide-react";
 
-const orchidImage = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/1b3bafd5a_generated_dfedd1c0.png";
-const labImage = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/ce03c6828_generated_dc9b69cf.png";
+const orchidImage = "/images/vial-alt-3.png";
+const labImage = "/images/vial-alt-1.png";
 
 export default function About() {
   return (

@@ -5,8 +5,8 @@ import { ArrowRight, Shield, FlaskRound, Award, Star, Truck } from "lucide-react
 import { Button } from "@/components/ui/button";
 import PeptideStackBuilder from "@/components/stack/PeptideStackBuilder";
 
-const LOGO_URL = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/a98525bef_IMG_1485.jpg";
-const LAB_IMG = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/71cdaa523_generated_8435cc3d.png";
+const LOGO_URL = "/images/cattleya-logo.jpg";
+const LAB_IMG = "/images/product-vial.png";
 
 // Most popular peptides with real names
 // Curated in-stock highlights for the homepage grid.

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, User, Menu, X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const LOGO_URL = "https://media.base44.com/images/public/6a1f4949719273f90329fc44/a98525bef_IMG_1485.jpg";
+const LOGO_URL = "/images/cattleya-logo.jpg";
 
 const navLinks = [
   { label: "Shop",     href: "/shop" },

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Building2, Mail, Phone, Globe, CheckCircle2, Send } from "lucide-react";
+import { Building2, Mail, Phone, Globe, CheckCircle2, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { api } from "@/api/apiClient";
 
 const TIERS = ["Wholesale", "Preferred Partner", "Enterprise", "White Label"];
 const TYPES = ["Research Company", "Laboratory", "University", "Reseller / Distributor", "Biotech Firm", "Clinic", "Other"];
@@ -14,6 +15,8 @@ export default function WholesaleApplicationForm() {
     orgType: "", annualVolume: "", tier: "", interestedIn: [], notes: ""
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -26,11 +29,20 @@ export default function WholesaleApplicationForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: replace with a real backend call (e.g. POST /api/wholesale-applications) once one exists.
-    console.log("[wholesale] application submitted:", form);
-    setSubmitted(true);
+    if (sending) return;
+    setError("");
+    setSending(true);
+    try {
+      const { email, ...rest } = form;
+      await api.forms.submit("wholesale", email, rest);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || "Something went wrong — please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (submitted) {
@@ -160,8 +172,15 @@ export default function WholesaleApplicationForm() {
             <textarea value={form.notes} onChange={e => set("notes", e.target.value)}
               placeholder="Tell us about your research, specific peptides needed, volume requirements, or any questions…"
               className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring resize-none h-24" />
-            <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-semibold mt-4">
-              <Send className="w-4 h-4 mr-2" /> Submit Wholesale Application
+            {error && (
+              <div className="mt-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>
+            )}
+            <Button type="submit" disabled={sending} className="w-full h-11 bg-primary hover:bg-primary/90 text-white font-semibold mt-4">
+              {sending ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Submitting...</>
+              ) : (
+                <><Send className="w-4 h-4 mr-2" /> Submit Wholesale Application</>
+              )}
             </Button>
             <p className="text-[11px] text-muted-foreground text-center mt-3">
               We respond within 24 business hours. Direct inquiries: <a href="mailto:wholesale@cattleyalabs.com" className="text-primary font-semibold">wholesale@cattleyalabs.com</a>

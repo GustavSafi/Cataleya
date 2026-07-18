@@ -11,6 +11,8 @@ import uploadRoutes from "./routes/upload.js";
 import newsletterRoutes from "./routes/newsletter.js";
 import ordersRoutes from "./routes/orders.js";
 import webhooksRoutes from "./routes/webhooks.js";
+import formsRoutes from "./routes/forms.js";
+import reviewsRoutes from "./routes/reviews.js";
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.use("/api/lab-results", labResultsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/orders", ordersRoutes);
+app.use("/api/forms", formsRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
 // Served only when STORAGE_PROVIDER=local; in production (STORAGE_PROVIDER=azure)
 // uploaded files are served directly from Azure Blob Storage instead.

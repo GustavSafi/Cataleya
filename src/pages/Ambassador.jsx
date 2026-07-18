@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { api } from "@/api/apiClient";
 
 // Follower minimums calculated for ~1,000 avg engagements
 // Avg engagement rates: TikTok ~5.96%, Instagram ~1.22%, Twitter ~0.045%, Snapchat ~3%
@@ -69,11 +70,28 @@ export default function Ambassador() {
     return num >= selectedPlatformData.minNum;
   };
 
-  const handleSubmit = (e) => {
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: replace with a real backend call (e.g. POST /api/ambassador-applications) once one exists.
-    console.log("[ambassador] application submitted:", { platform, ...form });
-    setSubmitted(true);
+    if (sending) return;
+    setError("");
+    setSending(true);
+    try {
+      await api.forms.submit("ambassador", form.email, {
+        name: form.name,
+        platform,
+        handle: form.handle,
+        followers: form.followers,
+        content: form.content,
+      });
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || "Something went wrong — please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (submitted) {
@@ -205,8 +223,15 @@ export default function Ambassador() {
                 required aria-required="true" aria-label="Tell us about your content" />
             </div>
 
-            <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/85 text-white font-bold">
-              Submit Application <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
+            {error && (
+              <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>
+            )}
+            <Button type="submit" disabled={sending} className="w-full h-11 bg-primary hover:bg-primary/85 text-white font-bold">
+              {sending ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" /> Submitting...</>
+              ) : (
+                <>Submit Application <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" /></>
+              )}
             </Button>
           </form>
         </div>

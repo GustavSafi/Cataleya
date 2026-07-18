@@ -4,19 +4,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send, Loader2 } from "lucide-react";
+import { api } from "@/api/apiClient";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: replace with a real backend call (e.g. POST /api/contact) once one exists.
-    console.log("[contact] message submitted:", form);
-    setSent(true);
+    if (sending) return;
+    setError("");
+    setSending(true);
+    try {
+      await api.forms.submit("contact", form.email, {
+        name: form.name,
+        subject: form.subject,
+        message: form.message,
+      });
+      setSent(true);
+    } catch (err) {
+      setError(err.message || "Something went wrong — please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -79,8 +94,17 @@ export default function Contact() {
                 <Label className="text-xs">Message</Label>
                 <Textarea placeholder="Tell us more..." rows={5} value={form.message} onChange={(e) => set("message", e.target.value)} required />
               </div>
-              <Button type="submit" className="h-11 px-8 bg-primary hover:bg-primary/90 text-primary-foreground">
-                Send Message
+              {error && (
+                <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">{error}</div>
+              )}
+              <Button type="submit" disabled={sending} className="h-11 px-8 bg-primary hover:bg-primary/90 text-primary-foreground">
+                {sending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
               </Button>
             </form>
           )}

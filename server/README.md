@@ -42,6 +42,9 @@ develop locally.
 | POST   | /api/orders/:id/simulate-paid  | No   | Dev-only — marks an order paid without a real payment. 404s unless `CRYPTO_PROVIDER` is unset/stub |
 | GET    | /api/orders/admin/list?status= | Admin | Lists orders (newest first, optional status filter) for the `/admin/orders` page |
 | POST   | /api/orders/:id/mark-paid      | Admin | Manually confirm a payment (used for Zelle). Idempotent, emails the customer on the transition to paid |
+| POST   | /api/forms/:type               | No   | Contact / wholesale / ambassador form submissions. Stored in `form_submissions` and emailed to `ADMIN_EMAIL` |
+| GET    | /api/reviews?product_id=       | No   | Visible reviews for a product, newest first |
+| POST   | /api/reviews                   | Yes  | Post a review (rating 1–5 + text). One per user per product; rate-limited |
 | POST   | /api/webhooks/coinbase         | No   | Coinbase Commerce webhook, marks orders paid on `charge:confirmed`. HMAC-verified against `COINBASE_COMMERCE_WEBHOOK_SECRET` |
 
 ### Checkout payment methods
