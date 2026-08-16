@@ -125,6 +125,9 @@ export const api = {
     async cryptoCheckout(id) {
       return request(`/api/orders/${id}/crypto-checkout`, { method: "POST" });
     },
+    async cardCheckout(id) {
+      return request(`/api/orders/${id}/card-checkout`, { method: "POST" });
+    },
     async simulatePaid(id) {
       return request(`/api/orders/${id}/simulate-paid`, { method: "POST" });
     },

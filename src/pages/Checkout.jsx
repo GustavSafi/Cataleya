@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Loader2, Bitcoin, Landmark, ShoppingBag } from "lucide-react";
+import { Loader2, Bitcoin, Landmark, ShoppingBag, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,15 @@ export default function Checkout() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // Cards are only offered when the backend reports a usable gateway.
+  const [cardOption, setCardOption] = useState({ enabled: false, testMode: false });
+
+  useEffect(() => {
+    api.orders
+      .paymentConfig()
+      .then((cfg) => setCardOption(cfg.card || { enabled: false, testMode: false }))
+      .catch(() => setCardOption({ enabled: false, testMode: false }));
+  }, []);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -57,6 +66,10 @@ export default function Checkout() {
 
       if (paymentMethod === "crypto") {
         const { hosted_url } = await api.orders.cryptoCheckout(order.id);
+        clearCart?.();
+        window.location.href = hosted_url;
+      } else if (paymentMethod === "card") {
+        const { hosted_url } = await api.orders.cardCheckout(order.id);
         clearCart?.();
         window.location.href = hosted_url;
       } else {
@@ -137,7 +150,29 @@ export default function Checkout() {
                   <p className="text-[11px] text-muted-foreground">BTC, ETH, USDC & more</p>
                 </div>
               </button>
+              {cardOption.enabled && (
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("card")}
+                  aria-pressed={paymentMethod === "card"}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-left ${paymentMethod === "card" ? "border-primary bg-primary/5" : "border-border/60 bg-secondary/20"}`}
+                >
+                  <CreditCard className="w-5 h-5 text-primary flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-bold text-foreground">
+                      Card {cardOption.testMode && <span className="text-[10px] font-semibold text-amber-700">(test mode)</span>}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">Debit or credit card</p>
+                  </div>
+                </button>
+              )}
             </div>
+            {paymentMethod === "card" && (
+              <p className="text-[11px] text-muted-foreground">
+                You'll be taken to our payment provider's secure page to enter your card details.
+                Cattleya Labs never sees or stores your card number.
+              </p>
+            )}
           </div>
 
           <label className="flex items-start gap-3 cursor-pointer">

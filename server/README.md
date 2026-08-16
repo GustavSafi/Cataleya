@@ -39,6 +39,7 @@ develop locally.
 | POST   | /api/orders                    | No*  | Creates an order (guest checkout allowed). *Linked to the caller's account if a valid token is present |
 | GET    | /api/orders/:id                | No   | Order id is an unguessable UUID, used as the confirmation/payment-instructions link |
 | POST   | /api/orders/:id/crypto-checkout | No  | Creates a Coinbase Commerce charge (or a local stub in dev), returns `{ hosted_url }` |
+| POST   | /api/orders/:id/card-checkout  | No   | Creates a hosted card-checkout session (or a local stub in dev), returns `{ hosted_url }` |
 | POST   | /api/orders/:id/simulate-paid  | No   | Dev-only — marks an order paid without a real payment. 404s unless `CRYPTO_PROVIDER` is unset/stub |
 | GET    | /api/orders/admin/list?status= | Admin | Lists orders (newest first, optional status filter) for the `/admin/orders` page |
 | POST   | /api/orders/:id/mark-paid      | Admin | Manually confirm a payment (used for Zelle). Idempotent, emails the customer on the transition to paid |
@@ -64,10 +65,29 @@ go live: create a Coinbase Commerce account, set `CRYPTO_PROVIDER=coinbase`,
 `COINBASE_COMMERCE_API_KEY` (Settings → API keys), and `COINBASE_COMMERCE_WEBHOOK_SECRET`
 (Settings → Webhook subscriptions — point it at `<your-api-url>/api/webhooks/coinbase`).
 
-**Stripe (cards/Google Pay/Apple Pay) is deliberately not implemented** — Stripe's terms
-prohibit many research-chemical businesses, and peptide vendors get declined or shut down
-regularly. Revisit this in a later release if you set up an account with a processor that
-explicitly allows the business.
+**Cards** are implemented as a gateway-agnostic **hosted redirect** flow: the server creates a
+payment session, the customer completes payment on the *gateway's own page*, and the gateway
+confirms the result. Card details never touch this server, which keeps PCI scope at SAQ A —
+**do not add raw card-number fields to the site.**
+
+Taking cards needs three separate things, and a bank account alone is not enough:
+1. a **bank account** (where funds settle),
+2. a **merchant account** from an acquirer that permits this business type, and
+3. a **payment gateway** (the API this code calls).
+
+Until a gateway exists, `CARD_PROVIDER=stub` drives a local fake checkout page at
+`/dev/card-stub/:id`, and — importantly — the card option is **automatically hidden whenever
+`NODE_ENV=production`**, so a deployed site never offers customers a card option that cannot
+take their money. The backend also rejects `payment_method: "card"` orders in that state, so
+the guard holds even if the UI is bypassed.
+
+To go live: obtain a merchant account + gateway, implement `createSessionViaGateway()` in
+`src/lib/card-payments.js` for that provider (NMI, Authorize.net and Stripe all support the
+hosted-redirect pattern already scaffolded), set `CARD_PROVIDER` plus the gateway credentials,
+and add a webhook to mark orders paid. Note **Stripe's terms prohibit many research-chemical
+businesses** — an offshore bank account does not change Stripe's own rules, so a high-risk-
+friendly acquirer is the durable path. Google Pay / Apple Pay generally ride on top of
+whichever card gateway you choose.
 
 Order prices are currently trusted from the client (the shop's product list lives in the
 frontend, there's no backend product catalog yet) — fine for a first release with manually

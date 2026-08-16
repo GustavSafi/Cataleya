@@ -29,6 +29,11 @@ export async function sendOrderPlacedEmail(order) {
     return;
   }
 
+  const howToPay =
+    order.payment_method === "card"
+      ? "Complete your card payment to confirm this order. We'll email you once it's processed."
+      : "Complete your crypto payment to confirm this order. We'll email you once it's received.";
+
   await sendEmail({
     to: order.email,
     subject: `Order received (#${shortId})`,
@@ -36,7 +41,7 @@ export async function sendOrderPlacedEmail(order) {
       <p>Thanks for your order, ${order.full_name}!</p>
       <ul>${itemsHtml}</ul>
       <p><strong>Total: $${Number(order.total).toFixed(2)}</strong></p>
-      <p>Complete your crypto payment to confirm this order. We'll email you once it's received.</p>
+      <p>${howToPay}</p>
     `,
   });
 }
@@ -62,7 +67,12 @@ export async function sendAdminNewOrderEmail(order) {
   if (!adminEmail) return; // no admin address configured — skip silently
 
   const shortId = order.id.slice(0, 8);
-  const method = order.payment_method === "zelle" ? "Zelle (needs manual confirmation)" : "Crypto";
+  const METHOD_LABELS = {
+    zelle: "Zelle (needs manual confirmation)",
+    crypto: "Crypto",
+    card: "Card",
+  };
+  const method = METHOD_LABELS[order.payment_method] || order.payment_method;
   await sendEmail({
     to: adminEmail,
     subject: `New order #${shortId} — ${order.payment_method.toUpperCase()} — $${Number(order.total).toFixed(2)}`,

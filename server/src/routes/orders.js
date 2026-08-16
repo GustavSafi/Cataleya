@@ -4,6 +4,7 @@ import rateLimit from "express-rate-limit";
 import { z } from "zod";
 import { pool } from "../db/pool.js";
 import { createCryptoCharge, isStubMode } from "../lib/crypto-payments.js";
+import { createCardSession, isCardStubMode, isCardEnabled } from "../lib/card-payments.js";
 import { sendOrderPlacedEmail, sendOrderPaidEmail, sendAdminNewOrderEmail } from "../lib/orderEmails.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -16,6 +17,11 @@ router.get("/payment-config", (req, res) => {
     zelle: {
       email: process.env.ZELLE_RECIPIENT_EMAIL || null,
       name: process.env.ZELLE_RECIPIENT_NAME || null,
+    },
+    // Lets the checkout hide the card option unless cards can actually be taken.
+    card: {
+      enabled: isCardEnabled(),
+      testMode: isCardStubMode(),
     },
   });
 });
@@ -40,7 +46,7 @@ const createOrderSchema = z.object({
   }),
   items: z.array(orderItemSchema).min(1),
   discreet: z.boolean().optional().default(false),
-  payment_method: z.enum(["zelle", "crypto"]),
+  payment_method: z.enum(["zelle", "crypto", "card"]),
 });
 
 // Admin gate — used by the order-management routes below.
@@ -71,6 +77,12 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: parsed.error.issues[0].message });
   }
   const { email, full_name, shipping_address, items, discreet, payment_method } = parsed.data;
+
+  // Don't accept card orders unless cards can actually be processed — otherwise a
+  // customer could be left with an unpayable order.
+  if (payment_method === "card" && !isCardEnabled()) {
+    return res.status(400).json({ error: "Card payments are not available right now" });
+  }
 
   // Prices/quantities are currently trusted from the client since there's no backend
   // product catalog yet (the shop's prices live in the frontend). Fine for a first
@@ -175,19 +187,56 @@ router.post("/:id/crypto-checkout", async (req, res) => {
   }
 });
 
-// POST /api/orders/:id/simulate-paid — dev-only stand-in for the Coinbase webhook,
-// only available when CRYPTO_PROVIDER is not set to "coinbase"
+// POST /api/orders/:id/card-checkout — creates (or returns the existing) hosted
+// checkout URL for a card order. Card details are entered on the gateway's own
+// page, never on this site.
+router.post("/:id/card-checkout", async (req, res) => {
+  const { rows } = await pool.query("SELECT * FROM orders WHERE id = $1", [req.params.id]);
+  if (rows.length === 0) {
+    return res.status(404).json({ error: "Order not found" });
+  }
+  const order = rows[0];
+  if (order.payment_method !== "card") {
+    return res.status(400).json({ error: "This order is not a card order" });
+  }
+  if (order.card_hosted_url) {
+    return res.json({ hosted_url: order.card_hosted_url });
+  }
+
+  try {
+    const { sessionId, hostedUrl } = await createCardSession({
+      orderId: order.id,
+      amount: Number(order.total),
+      email: order.email,
+    });
+    await pool.query(
+      "UPDATE orders SET card_session_id = $1, card_hosted_url = $2, updated_at = now() WHERE id = $3",
+      [sessionId, hostedUrl, order.id]
+    );
+    res.json({ hosted_url: hostedUrl });
+  } catch (err) {
+    console.error("Card session creation failed:", err);
+    res.status(502).json({ error: "Could not start card checkout" });
+  }
+});
+
+// POST /api/orders/:id/simulate-paid — dev-only stand-in for the payment provider's
+// webhook. Only available while the relevant provider is still in stub mode.
 router.post("/:id/simulate-paid", async (req, res) => {
-  if (!isStubMode()) {
+  const existing = await pool.query("SELECT payment_method FROM orders WHERE id = $1", [req.params.id]);
+  if (existing.rows.length === 0) {
+    return res.status(404).json({ error: "Order not found" });
+  }
+  const method = existing.rows[0].payment_method;
+  const allowed = method === "card" ? isCardStubMode() : isStubMode();
+  if (!allowed) {
     return res.status(404).json({ error: "Not found" });
   }
+
   const { rows } = await pool.query(
     "UPDATE orders SET status = 'paid', updated_at = now() WHERE id = $1 RETURNING *",
     [req.params.id]
   );
-  if (rows.length === 0) {
-    return res.status(404).json({ error: "Order not found" });
-  }
   const order = rows[0];
   sendOrderPaidEmail(order).catch((err) => console.error("Failed to send order-paid email:", err));
 

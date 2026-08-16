@@ -40,6 +40,7 @@ import BacWaterPage from '@/pages/BacWaterPage';
 import Checkout from '@/pages/Checkout';
 import OrderStatus from '@/pages/OrderStatus';
 import DevCryptoStub from '@/pages/DevCryptoStub';
+import DevCardStub from '@/pages/DevCardStub';
 import AdminOrders from '@/pages/AdminOrders';
 
 const AuthenticatedApp = () => {
@@ -92,6 +93,7 @@ const AuthenticatedApp = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order/:id" element={<OrderStatus />} />
         <Route path="/dev/crypto-stub/:id" element={<DevCryptoStub />} />
+        <Route path="/dev/card-stub/:id" element={<DevCardStub />} />
 
         {/* Requires login — redirects to /login if not authenticated.
             AdminOrders does its own role check and shows an "admin required" message

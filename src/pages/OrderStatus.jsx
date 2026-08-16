@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CheckCircle2, Clock, Landmark, Bitcoin, Loader2 } from "lucide-react";
+import { CheckCircle2, Clock, Landmark, Bitcoin, CreditCard, Loader2 } from "lucide-react";
 import { api } from "@/api/apiClient";
 
 export default function OrderStatus() {
@@ -88,6 +88,27 @@ export default function OrderStatus() {
             <p className="text-sm text-amber-800 leading-relaxed">
               We're still waiting for your payment to confirm on-chain. This page will update
               automatically once it's received — feel free to close this tab.
+            </p>
+          </div>
+        )}
+
+        {!isPaid && order.payment_method === "card" && (
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <CreditCard className="w-4 h-4 text-amber-700" />
+              <h2 className="text-sm font-bold text-amber-800">Awaiting Card Payment</h2>
+            </div>
+            <p className="text-sm text-amber-800 leading-relaxed">
+              We haven't received confirmation of your card payment yet. If you closed the
+              payment page before finishing, you can{" "}
+              {order.card_hosted_url ? (
+                <a href={order.card_hosted_url} className="font-semibold underline">
+                  return to the secure payment page
+                </a>
+              ) : (
+                "start the payment again from your cart"
+              )}
+              . This page updates automatically once payment clears.
             </p>
           </div>
         )}
